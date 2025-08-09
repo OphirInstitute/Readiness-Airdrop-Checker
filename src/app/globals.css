@@ -1,26 +1,468 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
+/* Professional DeFi Design System */
 @theme inline {
+  /* Professional color system */
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-accent-tertiary: var(--accent-tertiary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-status-success: var(--status-success);
+  --color-status-warning: var(--status-warning);
+  --color-status-error: var(--status-error);
+  --color-status-info: var(--status-info);
+  
+  /* Professional typography */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  
+  /* Legacy support for existing components */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-geist-sans: var(--font-geist-sans);
+  --font-geist-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  
+  /* Professional DeFi Light Theme */
+  --background-primary: #FFFFFF;
+  --background-secondary: #F8FAFC;
+  --background-tertiary: #F1F5F9;
+  --accent-primary: #2E5BFF;
+  --accent-secondary: #7C3AED;
+  --accent-tertiary: #06FFA5;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+  --status-success: #10B981;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
+  --status-info: #2E5BFF;
+  
+  /* Legacy support for existing components */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  /* Professional DeFi Dark Theme - Primary theme based on leading DeFi platforms */
+  --background-primary: #0B0E11;      /* Deep dark background */
+  --background-secondary: #161B22;    /* Card backgrounds */
+  --background-tertiary: #21262D;     /* Elevated surfaces */
+  --accent-primary: #2E5BFF;          /* Primary blue (similar to Uniswap) */
+  --accent-secondary: #7C3AED;        /* Purple accent */
+  --accent-tertiary: #06FFA5;         /* Success green */
+  --text-primary: #F0F6FF;            /* High contrast white */
+  --text-secondary: #8B949E;          /* Muted text */
+  --text-tertiary: #6E7681;           /* Subtle text */
+  --status-success: #06FFA5;          /* Positive metrics */
+  --status-warning: #FFB800;          /* Neutral/warning */
+  --status-error: #FF4747;            /* Negative/error */
+  --status-info: #2E5BFF;             /* Information */
+  
+  /* Legacy support for existing components */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  body {
+    @apply bg-background-primary text-text-primary;
+    font-family: var(--font-inter), Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-variation-settings: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Professional typography improvements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-primary;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  
+  /* Professional button and interactive element styles */
+  button {
+    font-family: inherit;
+    font-feature-settings: inherit;
+  }
+  
+  /* Professional focus styles */
+  :focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+  
+  /* Professional scrollbar styling for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--text-tertiary);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Professional utility classes for DeFi applications */
+@layer utilities {
+  /* Professional glass morphism effects */
+  .glass-card {
+    background: rgba(22, 27, 34, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(240, 246, 255, 0.1);
+  }
+  
+  .dark .glass-card {
+    background: rgba(22, 27, 34, 0.8);
+    border: 1px solid rgba(240, 246, 255, 0.1);
+  }
+  
+  .glass-card-light {
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+  }
+  
+  /* Light theme glass effect */
+  :not(.dark) .glass-card {
+    background: rgba(248, 250, 252, 0.8);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+  }
+  
+  /* Professional gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  }
+  
+  .gradient-secondary {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
+  }
+  
+  .gradient-success {
+    background: linear-gradient(135deg, var(--status-success) 0%, var(--accent-primary) 100%);
+  }
+  
+  /* Professional text gradients */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-success {
+    background: linear-gradient(135deg, var(--status-success) 0%, var(--accent-tertiary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Professional animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-slide-up,
+    .animate-scale-in {
+      animation: none;
+    }
+    
+    .hover-lift:hover {
+      transform: none;
+    }
+    
+    .card-professional:hover {
+      transform: none;
+    }
+    
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Reduced motion class for JavaScript control */
+  .reduce-motion .animate-fade-in,
+  .reduce-motion .animate-slide-up,
+  .reduce-motion .animate-scale-in {
+    animation: none;
+  }
+  
+  .reduce-motion .hover-lift:hover {
+    transform: none;
+  }
+  
+  .reduce-motion .card-professional:hover {
+    transform: none;
+  }
+  
+  .reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  /* Professional hover effects */
+  .hover-lift {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Professional border effects */
+  .border-gradient {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--background-secondary), var(--background-secondary)) padding-box,
+                linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) border-box;
+  }
+  
+  /* Professional metric display utilities */
+  .metric-positive {
+    color: var(--status-success);
+  }
+  
+  .metric-negative {
+    color: var(--status-error);
+  }
+  
+  .metric-neutral {
+    color: var(--status-warning);
+  }
+  
+  /* Professional loading states */
+  .skeleton {
+    background: linear-gradient(90deg, 
+      var(--background-secondary) 25%, 
+      var(--background-tertiary) 50%, 
+      var(--background-secondary) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
+/* Professional component-specific styles */
+@layer components {
+  /* Professional card styles */
+  .card-professional {
+    @apply bg-background-secondary rounded-xl p-6 transition-all duration-200;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .card-professional {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  :not(.dark) .card-professional {
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  .card-professional:hover {
+    transform: translateY(-2px);
+  }
+  
+  .dark .card-professional:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  :not(.dark) .card-professional:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .card-elevated {
+    @apply bg-background-secondary rounded-xl p-6 transition-all duration-200;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .card-elevated {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  :not(.dark) .card-elevated {
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Professional button styles */
+  .btn-primary {
+    @apply bg-accent-primary hover:bg-accent-primary/80 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .btn-secondary {
+    @apply bg-background-tertiary hover:bg-background-tertiary/80 text-text-primary border border-white/10 px-6 py-3 rounded-lg font-medium transition-all duration-200;
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-background-tertiary text-text-secondary hover:text-text-primary px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+  
+  /* Professional input styles */
+  .input-professional {
+    @apply bg-background-tertiary border border-white/10 text-text-primary placeholder:text-text-tertiary px-4 py-3 rounded-lg transition-all duration-200;
+  }
+  
+  .input-professional:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(46, 91, 255, 0.2);
+  }
+  
+  /* Professional badge styles */
+  .badge-success {
+    @apply bg-status-success/10 text-status-success border border-status-success/20 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-warning {
+    @apply bg-status-warning/10 text-status-warning border border-status-warning/20 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-error {
+    @apply bg-status-error/10 text-status-error border border-status-error/20 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .badge-info {
+    @apply bg-status-info/10 text-status-info border border-status-info/20 px-3 py-1 rounded-full text-sm font-medium;
+  }
 }
