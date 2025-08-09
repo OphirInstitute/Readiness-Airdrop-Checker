@@ -313,7 +313,7 @@ export const createLoadingAnimation = (
   ...args: unknown[]
 ) => {
   const loadingState = loadingStates[type];
-  return typeof loadingState === "function" ? loadingState(...args) : loadingState;
+  return typeof loadingState === "function" ? (loadingState as (...args: unknown[]) => unknown)(...args) : loadingState;
 };
 
 // Export all spring configurations

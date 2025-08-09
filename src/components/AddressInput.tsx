@@ -505,6 +505,7 @@ export default function AddressInput() {
               <ProfessionalLoadingSkeleton type="bridge" />
             ) : analysisErrors.bridge ? (
               <BridgeErrorState 
+                type="bridge"
                 message={analysisErrors.bridge}
                 onRetry={() => {
                   setAnalysisErrors(prev => ({ ...prev, bridge: undefined }));
@@ -536,6 +537,7 @@ export default function AddressInput() {
               <ProfessionalLoadingSkeleton type="kaito" />
             ) : analysisErrors.kaito ? (
               <KaitoErrorState 
+                type="kaito"
                 message={analysisErrors.kaito}
                 onRetry={() => {
                   setAnalysisErrors(prev => ({ ...prev, kaito: undefined }));

@@ -8,7 +8,6 @@ import {
   HopActivityResult, 
   HopBridgeTransaction, 
   HopLPPosition, 
-  HopUserStats,
   BridgeAnalysisError 
 } from '../types';
 import { 
@@ -16,7 +15,8 @@ import {
   hopUtils, 
   hopThresholds, 
   hopScoringWeights,
-  hopLPBonuses 
+  hopLPBonuses,
+  HopUserStats
 } from '../config/hop';
 
 export class HopProtocolService {
@@ -28,20 +28,6 @@ export class HopProtocolService {
     this.hop = new Hop(hopConfig.sdk.network);
     this.requestConfig = hopConfig.request;
     this.cache = new Map();
-    
-    // Configure providers if available
-    if (hopConfig.sdk.providers.ethereum) {
-      this.hop.setProvider('ethereum', hopConfig.sdk.providers.ethereum);
-    }
-    if (hopConfig.sdk.providers.arbitrum) {
-      this.hop.setProvider('arbitrum', hopConfig.sdk.providers.arbitrum);
-    }
-    if (hopConfig.sdk.providers.optimism) {
-      this.hop.setProvider('optimism', hopConfig.sdk.providers.optimism);
-    }
-    if (hopConfig.sdk.providers.polygon) {
-      this.hop.setProvider('polygon', hopConfig.sdk.providers.polygon);
-    }
   }
 
   /**
@@ -121,10 +107,10 @@ export class HopProtocolService {
       
       // Check LP positions for each token and chain combination
       for (const token of hopConfig.supportedTokens) {
-        for (const [chainName, chainId] of Object.entries(hopConfig.supportedChains)) {
+        for (const [chainName] of Object.entries(hopConfig.supportedChains)) {
           try {
             const hopToken = this.hop.bridge(token);
-            const ammWrapper = hopToken.getAmmWrapper(chainId);
+            const ammWrapper = hopToken.getAmmWrapper(chainName as string);
             
             if (!ammWrapper) continue;
             
@@ -132,7 +118,7 @@ export class HopProtocolService {
             const lpTokenBalance = await this.getLPTokenBalance(
               ammWrapper,
               address,
-              chainId,
+              chainName,
               token
             );
             
@@ -140,7 +126,7 @@ export class HopProtocolService {
               const position = await this.buildLPPosition(
                 ammWrapper,
                 address,
-                chainId,
+                chainName,
                 token,
                 lpTokenBalance
               );
@@ -456,7 +442,7 @@ export class HopProtocolService {
   private async getLPTokenBalance(
     ammWrapper: unknown,
     address: string,
-    chainId: number,
+    chainName: string,
     token: string
   ): Promise<string> {
     try {
@@ -466,7 +452,7 @@ export class HopProtocolService {
       
       return '0'; // Placeholder
     } catch (error) {
-      console.warn(`Failed to get LP token balance for ${token} on chain ${chainId}:`, error);
+      console.warn(`Failed to get LP token balance for ${token} on chain ${chainName}:`, error);
       return '0';
     }
   }
@@ -474,7 +460,7 @@ export class HopProtocolService {
   private async buildLPPosition(
     ammWrapper: unknown,
     address: string,
-    chainId: number,
+    chainName: string,
     token: string,
     lpTokenBalance: string
   ): Promise<HopLPPosition | null> {
@@ -482,6 +468,7 @@ export class HopProtocolService {
       // Mock implementation - in reality, this would build a complete LP position
       // with all relevant data from the AMM wrapper
       
+      const chainId = hopConfig.supportedChains[chainName as keyof typeof hopConfig.supportedChains];
       const position: HopLPPosition = {
         chainId,
         token,
@@ -501,7 +488,7 @@ export class HopProtocolService {
 
       return position;
     } catch (error) {
-      console.warn(`Failed to build LP position for ${token} on chain ${chainId}:`, error);
+      console.warn(`Failed to build LP position for ${token} on chain ${chainName}:`, error);
       return null;
     }
   }

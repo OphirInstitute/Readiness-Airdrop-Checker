@@ -12,7 +12,7 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ className, size = 'md', showLabel = false }: ThemeToggleProps) {
-  const { theme, effectiveTheme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   const getIcon = () => {
     switch (theme) {

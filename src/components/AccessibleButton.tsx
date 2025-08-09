@@ -1,9 +1,11 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { Button, ButtonProps } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { getAccessibleButtonClasses, getFocusRingClasses } from '@/lib/utils/accessibility';
 import { useTheme } from '@/contexts/ThemeContext';
+
+type ButtonProps = React.ComponentProps<typeof Button>;
 
 interface AccessibleButtonProps extends ButtonProps {
   /**

@@ -35,10 +35,8 @@ interface KaitoMetricsDashboardProps {
 }
 
 export const KaitoMetricsDashboard: React.FC<KaitoMetricsDashboardProps> = ({
-  address,
   kaitoData,
   projectEngagement,
-  socialInfluence,
   isLoading = false
 }) => {
   if (isLoading) {

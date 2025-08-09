@@ -6,11 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { 
   BarChart3, 
-  TrendingUp, 
   Calendar,
   Activity,
-  Users,
-  MessageSquare
+  Users
 } from 'lucide-react';
 import type { DailyActivity } from '../lib/types';
 

@@ -159,9 +159,9 @@ export const BridgeActivityTimeline: React.FC<BridgeActivityTimelineProps> = ({
                       </div>
                     )}
                     
-                    {activity.token && (
+                    {(activity as { token?: string }).token && (
                       <Badge variant="outline" className="text-xs">
-                        {activity.token}
+                        {(activity as { token?: string }).token}
                       </Badge>
                     )}
                   </div>

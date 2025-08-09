@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider, useTheme } from '../ThemeContext';
 
@@ -24,7 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
 // Test component that uses the theme context
 function TestComponent() {
   const { theme, effectiveTheme, prefersReducedMotion, hasError, isSupported, setTheme, toggleTheme, resetTheme } = useTheme();
-  
+
   return (
     <div>
       <div data-testid="theme">{theme}</div>
@@ -48,9 +48,9 @@ describe('ThemeContext', () => {
     localStorageMock.setItem.mockClear();
     localStorageMock.removeItem.mockClear();
     matchMediaMock.mockClear();
-    
+
     // Default matchMedia mock
-    matchMediaMock.mockImplementation((query) => ({
+    matchMediaMock.mockImplementation((query: string) => ({
       matches: query === '(prefers-color-scheme: dark)',
       media: query,
       onchange: null,
@@ -68,7 +68,7 @@ describe('ThemeContext', () => {
   describe('Theme Initialization', () => {
     it('should initialize with system theme when no stored preference', () => {
       localStorageMock.getItem.mockReturnValue(null);
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -80,7 +80,7 @@ describe('ThemeContext', () => {
 
     it('should initialize with stored theme preference', () => {
       localStorageMock.getItem.mockReturnValue('light');
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -94,7 +94,7 @@ describe('ThemeContext', () => {
       localStorageMock.getItem.mockImplementation(() => {
         throw new Error('localStorage not available');
       });
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -107,7 +107,7 @@ describe('ThemeContext', () => {
 
   describe('Effective Theme Calculation', () => {
     it('should set effective theme to dark when system preference is dark', async () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-color-scheme: dark)',
         media: query,
         onchange: null,
@@ -130,7 +130,7 @@ describe('ThemeContext', () => {
     });
 
     it('should set effective theme to light when system preference is light', async () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: false,
         media: query,
         onchange: null,
@@ -154,7 +154,7 @@ describe('ThemeContext', () => {
 
     it('should use explicit theme when not system', async () => {
       localStorageMock.getItem.mockReturnValue('light');
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -170,7 +170,7 @@ describe('ThemeContext', () => {
   describe('Theme Setting', () => {
     it('should update theme and persist to localStorage', async () => {
       const user = userEvent.setup();
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -188,7 +188,7 @@ describe('ThemeContext', () => {
       localStorageMock.setItem.mockImplementation(() => {
         throw new Error('localStorage not available');
       });
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -205,7 +205,7 @@ describe('ThemeContext', () => {
   describe('Theme Toggle', () => {
     it('should cycle through themes correctly', async () => {
       const user = userEvent.setup();
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -228,7 +228,7 @@ describe('ThemeContext', () => {
 
   describe('Reduced Motion', () => {
     it('should detect reduced motion preference', async () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-reduced-motion: reduce)',
         media: query,
         onchange: null,
@@ -271,7 +271,7 @@ describe('ThemeContext', () => {
     it('should detect unsupported browsers', async () => {
       // Mock unsupported CSS custom properties
       const originalCreateElement = document.createElement;
-      document.createElement = jest.fn().mockImplementation((tagName) => {
+      document.createElement = jest.fn().mockImplementation((tagName: string) => {
         const element = originalCreateElement.call(document, tagName);
         if (tagName === 'div') {
           element.style.setProperty = jest.fn();
@@ -299,7 +299,7 @@ describe('ThemeContext', () => {
     it('should reset theme to system and clear localStorage', async () => {
       const user = userEvent.setup();
       localStorageMock.getItem.mockReturnValue('dark');
-      
+
       render(
         <ThemeProvider>
           <TestComponent />
@@ -315,7 +315,7 @@ describe('ThemeContext', () => {
 
   describe('Document Class Application', () => {
     it('should apply dark class when effective theme is dark', async () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-color-scheme: dark)',
         media: query,
         onchange: null,
@@ -338,7 +338,7 @@ describe('ThemeContext', () => {
     });
 
     it('should apply reduce-motion class when user prefers reduced motion', async () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-reduced-motion: reduce)',
         media: query,
         onchange: null,

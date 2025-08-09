@@ -119,7 +119,7 @@ export class ThemeErrorBoundary extends Component<Props, State> {
               <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
                 <h2 className="font-semibold text-gray-900 mb-2">What happened?</h2>
                 <p className="text-sm text-gray-600 mb-2">
-                  The theme system encountered an error and couldn't load properly. This might be due to:
+                  The theme system encountered an error and couldn&apos;t load properly. This might be due to:
                 </p>
                 <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
                   <li>Browser compatibility issues</li>

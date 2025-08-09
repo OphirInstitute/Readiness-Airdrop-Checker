@@ -8,9 +8,7 @@ import { Progress } from './ui/progress';
 import { 
   Rocket, 
   TrendingUp, 
-  Clock, 
   Target,
-  ExternalLink,
   AlertCircle
 } from 'lucide-react';
 import type { ProjectEngagement, TrendingProject } from '../lib/types';

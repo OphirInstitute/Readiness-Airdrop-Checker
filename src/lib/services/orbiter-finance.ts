@@ -6,14 +6,14 @@
 import { 
   OrbiterActivityResult, 
   OrbiterTransaction, 
-  OrbiterUserStats, 
   BridgeAnalysisError 
 } from '../types';
 import { 
   orbiterConfig, 
   orbiterUtils, 
   orbiterThresholds, 
-  orbiterScoringWeights 
+  orbiterScoringWeights,
+  OrbiterUserStats
 } from '../config/orbiter';
 
 export class OrbiterFinanceService {

@@ -19,7 +19,7 @@ export const ProfessionalLoadingSkeleton: React.FC<ProfessionalLoadingSkeletonPr
     transition: {
       repeat: Infinity,
       duration: 1.5,
-      ease: 'easeInOut'
+      ease: [0.4, 0, 0.6, 1] as const
     }
   };
 

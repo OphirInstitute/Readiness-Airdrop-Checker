@@ -50,8 +50,8 @@ export class ProfessionalErrorBoundary extends React.Component<
     console.error('Professional Error Boundary caught an error:', error, errorInfo);
     
     // In production, send to error tracking service
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'exception', {
+    if (typeof window !== 'undefined' && (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag) {
+      (window as unknown as { gtag: (...args: unknown[]) => void }).gtag('event', 'exception', {
         description: error.message,
         fatal: false
       });

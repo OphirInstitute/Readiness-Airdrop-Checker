@@ -16,7 +16,7 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 // Mock matchMedia
-const matchMediaMock = jest.fn().mockImplementation((query) => ({
+const matchMediaMock = jest.fn().mockImplementation((query: string) => ({
   matches: false,
   media: query,
   onchange: null,
@@ -173,7 +173,7 @@ describe('ThemeToggle', () => {
 
   describe('Animation and Reduced Motion', () => {
     it('should respect reduced motion preference', () => {
-      matchMediaMock.mockImplementation((query) => ({
+      matchMediaMock.mockImplementation((query: string) => ({
         matches: query === '(prefers-reduced-motion: reduce)',
         media: query,
         onchange: null,
