@@ -421,9 +421,12 @@ export default function AddressInput() {
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-purple-600">
-                      {result.onchainAnalysis.firstTransaction}
+                      {result.onchainAnalysis.firstTransaction && result.onchainAnalysis.lastActivity 
+                        ? `${result.onchainAnalysis.firstTransaction} - ${result.onchainAnalysis.lastActivity}`
+                        : result.onchainAnalysis.firstTransaction || 'N/A'
+                      }
                     </div>
-                    <div className="text-sm text-muted-foreground">First TX</div>
+                    <div className="text-sm text-muted-foreground">Activity Period</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-orange-600">
@@ -496,96 +499,96 @@ export default function AddressInput() {
             </div>
           )}
 
-          {/* Enhanced Bridge Analysis */}
-          <CollapsibleSection 
-            title="Bridge Activity Analysis" 
-            sectionKey="bridge"
-          >
-            {isAnalyzing ? (
-              <ProfessionalLoadingSkeleton type="bridge" />
-            ) : analysisErrors.bridge ? (
-              <BridgeErrorState 
-                type="bridge"
-                message={analysisErrors.bridge}
-                onRetry={() => {
-                  setAnalysisErrors(prev => ({ ...prev, bridge: undefined }));
-                  // Retry bridge analysis
-                }}
-              />
-            ) : bridgeAnalysis ? (
-              <BridgeActivityCard
-                orbiterData={bridgeAnalysis.orbiterAnalysis}
-                hopData={bridgeAnalysis.hopAnalysis}
-                historicalComparison={bridgeAnalysis.historicalComparison}
-                isLoading={false}
-              />
-            ) : input.startsWith('0x') ? (
-              <ProfessionalLoadingSkeleton type="bridge" />
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                Bridge analysis is only available for wallet addresses
-              </div>
-            )}
-          </CollapsibleSection>
+          {/* Enhanced Bridge Analysis - Only show if we have data or are loading */}
+          {(bridgeAnalysis || isAnalyzing || analysisErrors.bridge) && (
+            <CollapsibleSection 
+              title="Bridge Activity Analysis" 
+              sectionKey="bridge"
+            >
+              {isAnalyzing ? (
+                <ProfessionalLoadingSkeleton type="bridge" />
+              ) : analysisErrors.bridge ? (
+                <BridgeErrorState 
+                  type="bridge"
+                  message={analysisErrors.bridge}
+                  onRetry={() => {
+                    setAnalysisErrors(prev => ({ ...prev, bridge: undefined }));
+                    // Retry bridge analysis
+                  }}
+                />
+              ) : bridgeAnalysis ? (
+                <BridgeActivityCard
+                  orbiterData={bridgeAnalysis.orbiterAnalysis}
+                  hopData={bridgeAnalysis.hopAnalysis}
+                  historicalComparison={bridgeAnalysis.historicalComparison}
+                  isLoading={false}
+                />
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  No bridge activity detected for this address
+                </div>
+              )}
+            </CollapsibleSection>
+          )}
 
-          {/* Enhanced Kaito Analysis */}
-          <CollapsibleSection 
-            title="Enhanced Kaito Social Metrics" 
-            sectionKey="kaito"
-          >
-            {isAnalyzing ? (
-              <ProfessionalLoadingSkeleton type="kaito" />
-            ) : analysisErrors.kaito ? (
-              <KaitoErrorState 
-                type="kaito"
-                message={analysisErrors.kaito}
-                onRetry={() => {
-                  setAnalysisErrors(prev => ({ ...prev, kaito: undefined }));
-                  // Retry Kaito analysis
-                }}
-              />
-            ) : enhancedKaito ? (
-              <KaitoMetricsDashboard
-                address={result.address}
-                kaitoData={enhancedKaito.kaitoData}
-                projectEngagement={enhancedKaito.projectEngagement}
-                socialInfluence={enhancedKaito.socialInfluence}
-                isLoading={false}
-              />
-            ) : result.socialAnalysis?.kaitoEngagement?.hasProfile ? (
-              // Fallback to basic Kaito display
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    Kaito Engagement
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-orange-600">
-                        {result.socialAnalysis.kaitoEngagement.profile?.yapScore || 0}
+          {/* Enhanced Kaito Analysis - Only show if we have data or are loading */}
+          {(enhancedKaito || result.socialAnalysis?.kaitoEngagement?.hasProfile || isAnalyzing || analysisErrors.kaito) && (
+            <CollapsibleSection 
+              title="Enhanced Kaito Social Metrics" 
+              sectionKey="kaito"
+            >
+              {isAnalyzing ? (
+                <ProfessionalLoadingSkeleton type="kaito" />
+              ) : analysisErrors.kaito ? (
+                <KaitoErrorState 
+                  type="kaito"
+                  message={analysisErrors.kaito}
+                  onRetry={() => {
+                    setAnalysisErrors(prev => ({ ...prev, kaito: undefined }));
+                    // Retry Kaito analysis
+                  }}
+                />
+              ) : enhancedKaito ? (
+                <KaitoMetricsDashboard
+                  address={result.address}
+                  kaitoData={enhancedKaito.kaitoData}
+                  projectEngagement={enhancedKaito.projectEngagement}
+                  socialInfluence={enhancedKaito.socialInfluence}
+                  isLoading={false}
+                />
+              ) : result.socialAnalysis?.kaitoEngagement?.hasProfile ? (
+                // Fallback to basic Kaito display
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <User className="h-5 w-5" />
+                      Kaito Engagement
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-orange-600">
+                          {result.socialAnalysis.kaitoEngagement.profile?.yapScore || 0}
+                        </div>
+                        <div className="text-sm text-muted-foreground">Engagement Score</div>
                       </div>
-                      <div className="text-sm text-muted-foreground">Engagement Score</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-xl font-bold text-red-600">
-                        {result.socialAnalysis.kaitoEngagement.profile?.totalEngagement || 0}
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-red-600">
+                          {result.socialAnalysis.kaitoEngagement.profile?.totalEngagement || 0}
+                        </div>
+                        <div className="text-sm text-muted-foreground">Interactions</div>
                       </div>
-                      <div className="text-sm text-muted-foreground">Interactions</div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : input.startsWith('0x') ? (
-              <ProfessionalLoadingSkeleton type="kaito" />
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                Enhanced Kaito analysis is only available for wallet addresses
-              </div>
-            )}
-          </CollapsibleSection>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  No Kaito engagement data found for this address
+                </div>
+              )}
+            </CollapsibleSection>
+          )}
 
           {/* Recommendations */}
           <Card>

@@ -367,29 +367,33 @@ export class HopProtocolService {
   async analyzeHopActivity(address: string): Promise<HopActivityResult> {
     try {
       // Fetch bridge history and LP positions in parallel
-      const [bridgeTransactions, lpPositions] = await Promise.all([
+      const [bridgeTransactions, lpPositions] = await Promise.allSettled([
         this.getHopBridgeHistory(address),
         this.getLiquidityProvisionActivity(address)
       ]);
 
+      // Extract results, handling any failures gracefully
+      const bridgeData = bridgeTransactions.status === 'fulfilled' ? bridgeTransactions.value : [];
+      const lpData = lpPositions.status === 'fulfilled' ? lpPositions.value : [];
+
       // Analyze cross-chain routes
-      const crossChainRoutes = await this.analyzeCrossChainRoutes(bridgeTransactions);
+      const crossChainRoutes = await this.analyzeCrossChainRoutes(bridgeData);
 
       // Build bridge activity summary
-      const bridgeActivity = this.buildBridgeActivitySummary(bridgeTransactions);
+      const bridgeActivity = this.buildBridgeActivitySummary(bridgeData);
 
       // Build LP activity summary
-      const lpActivity = this.buildLPActivitySummary(lpPositions);
+      const lpActivity = this.buildLPActivitySummary(lpData);
 
       // Calculate eligibility metrics
       const eligibilityMetrics = this.calculateHopEligibilityScore(
-        bridgeTransactions,
-        lpPositions,
+        bridgeData,
+        lpData,
         crossChainRoutes
       );
 
       // Build activity timeline
-      const activityTimeline = this.buildActivityTimeline(bridgeTransactions, lpPositions);
+      const activityTimeline = this.buildActivityTimeline(bridgeData, lpData);
 
       const result: HopActivityResult = {
         address,
