@@ -302,6 +302,10 @@ class FarcasterService {
       }));
     } catch (error) {
       console.error('Error fetching channel activity:', error);
+      // Handle 402 payment required error gracefully
+      if (error instanceof Error && error.message.includes('402')) {
+        console.warn('Neynar API requires payment for channel data, returning empty results');
+      }
       return [];
     }
   }
