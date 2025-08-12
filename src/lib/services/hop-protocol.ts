@@ -468,8 +468,6 @@ export class HopProtocolService {
           amount,
           bonderFee,
           timestamp,
-          sender: address,
-          recipient: address,
           status: 'completed'
         });
       }
